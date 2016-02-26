@@ -6,7 +6,7 @@
 	$pin = htmlspecialchars($_REQUEST['pin'],ENT_QUOTES,'UTF-8');
 	#-- Params
 	$cookie_dir = "/tmp/rainer/";
-	$cookie_file = $cookie_dir.$sid."_".substr(md5(microtime()),0,5).".txt";
+	$cookie_file = $cookie_dir.$_SERVER['REMOTE_ADDR'].'_'.$sid."_".substr(md5(microtime()),0,5).".txt";
 	$url_base = "https://gsw.gabest.usg.edu";
 	#-- Enter login credentials
 	$url = $url_base."/pls/B420/twbkwbis.P_ValLogin";
@@ -122,7 +122,6 @@ $transcripts = array();
 				},
 				$terms_rows
 			);
-			//$standing = $xpath->query('tr/th[@colspan=5]/../following-sibling::tr', $terms_table)->item(0)->lastChild->nodeValue;
 			$standing = array_combine($terms_array, $standing_array);
 			$last_standing = array('term' => end($terms_array), 'standing' => $standing[end($terms_array)]);
 			$transcript = ['type' => $title, 'summary' => $gpa_array, 'last_semester' => $last_standing];

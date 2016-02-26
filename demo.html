@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+    <title>GSW RAIN Credentials Validator</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/demo.css">
+</head>
+<body>
+    <div class="row">
+    <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+    <!--<div class="container">-->
+        <h3 class="text-center">
+            GSW RAIN Credentials Validator
+        </h3>
+        <hr>
+        <form class="form-horizontal" method="post">
+            <div class="form-group">
+                <label for="gswid" class="col-sm-3 col-sm-offset-1 control-label">GSW ID</label>
+                <div class="col-sm-6">
+                    <input type="password" maxlength="9" name="sid" class="form-control" id="gswid" placeholder="913......">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pin" class="col-sm-3 col-sm-offset-1 control-label">PIN</label>
+                <div class="col-sm-6">
+                    <input type="password" maxlength="9" name="pin" class="form-control" id="pin" placeholder="6 digits">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8">
+                    <button class="btn btn-default">Submit</button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <div id="result">
+            <div class="row">
+                <div class="col-sm-12">
+                    <pre><code>Result of credentials analysis (yet to be recieved)</code></pre>
+                </div>
+            </div>
+        </div>
+    <!--</div>-->
+    </div>
+    </div>
+
+    <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="assets/js/demo.js"></script>
+</body>
+</html>

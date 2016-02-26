@@ -1,0 +1,13 @@
+div.container {
+    /*width: 500px;*/
+    /*margin: 50px auto;*/
+}
+
+div.container h3 {
+    margin: 20px auto;
+}
+
+hr {
+    margin: 20px auto;
+    border-bottom: 1px solid black;
+}

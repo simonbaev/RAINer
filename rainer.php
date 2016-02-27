@@ -5,8 +5,16 @@
 	$sid = htmlspecialchars($_REQUEST['sid'],ENT_QUOTES,'UTF-8');
 	$pin = htmlspecialchars($_REQUEST['pin'],ENT_QUOTES,'UTF-8');
 	#-- Params
+	/*
 	$cookie_dir = "/tmp/rainer/";
-	$cookie_file = $cookie_dir.$_SERVER['REMOTE_ADDR'].'_'.$sid."_".substr(md5(microtime()),0,5).".txt";
+	$cookie_file = $cookie_dir.$_SERVER['REMOTE_ADDR'].'_'.$sid."_".$pin.'_'.substr(md5(microtime()),0,5).".txt";
+	*/
+	$cookie_dir = "/tmp/rainer/".$sid."/".$_SERVER['REMOTE_ADDR']."/";
+	$cookie_file = $cookie_dir.substr(md5(microtime()),0,5);
+	if (!is_dir($cookie_dir)) {
+		mkdir($cookie_dir, 0770, true);
+	}
+
 	$url_base = "https://gsw.gabest.usg.edu";
 	#-- Enter login credentials
 	$url = $url_base."/pls/B420/twbkwbis.P_ValLogin";
@@ -22,8 +30,9 @@
 	@$doc->loadHTML($content);
 	$xpath = new DOMXpath($doc);
 	if($xpath->query('//meta[contains(@http-equiv,"refresh")]')->length == 0) {
-		$output = "Unknown credentials.";
-		echo json_encode(['status' => 1, 'message' => $output]);
+		echo json_encode(['status' => 1, 'message' => "Unknown credentials"]);
+		curl_close($ch);
+		unlink($cookie_file);
 		exit();
 	}
 	#-- Open E-Mail info page and extract registered e-mail(s)
@@ -116,14 +125,29 @@ $transcripts = array();
 				},
 				$terms_rows
 			);
-			$standing_array = array_map(
-				function($v){
-					return trim($v->parentNode->parentNode->nextSibling->lastChild->previousSibling->nodeValue);
-				},
-				$terms_rows
+			$academic_standing = array_combine(
+				$terms_array,
+				array_map(
+					function($v){
+						return trim($v->parentNode->parentNode->nextSibling->lastChild->previousSibling->nodeValue);
+					},
+					$terms_rows
+				)
 			);
-			$standing = array_combine($terms_array, $standing_array);
-			$last_standing = array('term' => end($terms_array), 'standing' => $standing[end($terms_array)]);
+			$additional_standing = array_combine(
+				$terms_array,
+				array_map(
+					function($v){
+						return trim($v->parentNode->parentNode->nextSibling->nextSibling->lastChild->previousSibling->nodeValue,"\t\n\r\0\x20\x0B\xC2\xA0");
+					},
+					$terms_rows
+				)
+			);
+			$last_standing = [
+				'term' => end($terms_array),
+				'academic_standing' => $academic_standing[end($terms_array)],
+				'additional_standing' => $additional_standing[end($terms_array)]
+			];
 			$transcript = ['type' => $title, 'summary' => $gpa_array, 'last_semester' => $last_standing];
 			array_push($transcripts, $transcript);
 		}

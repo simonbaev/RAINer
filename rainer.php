@@ -11,7 +11,7 @@
 	$pin = htmlspecialchars($_POST['pin'], ENT_QUOTES, 'UTF-8');
 	#-- Cookie file
 	$cookie_dir = "/tmp/rainer/".$sid."/".$_SERVER['REMOTE_ADDR']."/";
-	$cookie_file = $cookie_dir.substr(md5(microtime()),0,5);
+	$cookie_file = $cookie_dir.date('Y-m-d_H:i:s').'_'.substr(md5(microtime()),0,5);
 	if (!is_dir($cookie_dir)) {
 		mkdir($cookie_dir, 0770, true);
 	}

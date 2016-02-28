@@ -1,20 +1,21 @@
 <?php
 	#-- Setup output MIME format as JSON
 	header('Content-type: application/json');
+	#-- Input sanitizing
+	if(empty($_POST['sid']) || empty($_POST['pin'])) {
+		echo json_encode(['status' => 100, 'message' => "Incomplete request"]);
+		exit();
+	}
 	#-- Read data from HTML form
-	$sid = htmlspecialchars($_REQUEST['sid'],ENT_QUOTES,'UTF-8');
-	$pin = htmlspecialchars($_REQUEST['pin'],ENT_QUOTES,'UTF-8');
-	#-- Params
-	/*
-	$cookie_dir = "/tmp/rainer/";
-	$cookie_file = $cookie_dir.$_SERVER['REMOTE_ADDR'].'_'.$sid."_".$pin.'_'.substr(md5(microtime()),0,5).".txt";
-	*/
+	$sid = htmlspecialchars($_POST['sid'], ENT_QUOTES, 'UTF-8');
+	$pin = htmlspecialchars($_POST['pin'], ENT_QUOTES, 'UTF-8');
+	#-- Cookie file
 	$cookie_dir = "/tmp/rainer/".$sid."/".$_SERVER['REMOTE_ADDR']."/";
 	$cookie_file = $cookie_dir.substr(md5(microtime()),0,5);
 	if (!is_dir($cookie_dir)) {
 		mkdir($cookie_dir, 0770, true);
 	}
-
+	#-- Login request
 	$url_base = "https://gsw.gabest.usg.edu";
 	#-- Enter login credentials
 	$url = $url_base."/pls/B420/twbkwbis.P_ValLogin";
@@ -87,7 +88,7 @@
 	$name = preg_split('/\s+/',trim($xpath->query('//div[@class="staticheaders"]/text()')->item(0)->nodeValue),2)[1];
 
 	#-- Explore Academic records
-$transcripts = array();
+	$transcripts = array();
 	if(array_key_exists('student', $emails)) {
 		$url = $url_base . "/pls/B420/bwwktrns.P_DispStuTrans";
 		$ch = curl_init($url);

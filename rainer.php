@@ -67,11 +67,11 @@
 	}
 
 	#-- Explore Term select page to identify Name
-	if(array_key_exists('employee', $emails)) {
-		$url = $url_base."/pls/B420/bwlkostm.P_FacSelTerm";
-	}
-	else if(array_key_exists('student', $emails)) {
+	if(array_key_exists('student', $emails)) {
 		$url = $url_base."/pls/B420/bwskflib.P_SelDefTerm";
+	}
+	else if(array_key_exists('employee', $emails)) {
+		$url = $url_base."/pls/B420/bwlkostm.P_FacSelTerm";
 	}
 	else {
 		echo json_encode(['status' => 3, 'message' => "Cannot identify name"]);
